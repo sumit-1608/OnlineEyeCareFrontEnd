@@ -1,0 +1,50 @@
+import { Routes, Route } from 'react-router-dom';
+import Container from '../../components/Container';
+import Main from './Main';
+
+import Tretment from './Tretment';
+import Settings from './Settings';
+
+export default function Doctor() {
+  const sidepanal = [
+    {
+      label: 'Doctor',
+      href: '/doctor',
+    },
+    {
+      label: 'Tretment',
+      href: '/doctor/tretment',
+    },
+    {
+      label: 'Setting',
+      href: '/doctor/setting',
+    },
+  ];
+
+  return (
+    <Container>
+      <div className="p-8 flex flex-row gap-8">
+        <div className="basis-3/4 px-6 flex flex-col  ">
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/tretment" element={<Tretment />} />
+            <Route path="/setting" element={<Settings />} />
+          </Routes>
+        </div>
+        <div className="basis-1/4 px-6">
+          <div className="flex flex-col  bg-[#597286]">
+            {sidepanal.map((item, i) => (
+              <a
+                key={i}
+                href={item.href}
+                className="py-2 px-6 hover:first-letter hover:border-l-[6px] hover:border-[#364f64]  "
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Container>
+  );
+}
