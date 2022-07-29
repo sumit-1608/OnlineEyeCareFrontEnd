@@ -1,37 +1,37 @@
-import { Routes, Route } from 'react-router-dom';
-import Container from '../../components/Container';
-import Main from './Main';
+import { Routes, Route } from "react-router-dom";
+import Container from "../../components/Container";
+import Main from "./Main";
 
-import Tretment from './Tretment';
-import Settings from './Settings';
+import Tretment from "./Tretment";
+import Settings from "./Settings";
 
 export default function Doctor() {
   const sidepanal = [
     {
-      label: 'Doctor',
-      href: '/doctor',
+      label: "Doctor",
+      href: "/doctor",
     },
     {
-      label: 'Tretment',
-      href: '/doctor/tretment',
+      label: "Tretment",
+      href: "/doctor/tretment",
     },
     {
-      label: 'Setting',
-      href: '/doctor/setting',
+      label: "Setting",
+      href: "/doctor/setting",
     },
   ];
 
   return (
     <Container>
-      <div className="p-8 flex flex-row gap-8">
-        <div className="basis-3/4 px-6 flex flex-col  ">
+      <div className="p-8 flex flex-row gap-3">
+        <div className="basis-5/6 px-6 flex flex-col  ">
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/tretment" element={<Tretment />} />
             <Route path="/setting" element={<Settings />} />
           </Routes>
         </div>
-        <div className="basis-1/4 px-6">
+        <div className="basis-1/6 pl-2">
           <div className="flex flex-col  bg-[#597286]">
             {sidepanal.map((item, i) => (
               <a

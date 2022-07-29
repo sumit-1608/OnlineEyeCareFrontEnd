@@ -285,31 +285,35 @@ export default function Settings(props) {
         </thead>
         <tbody>
           {doctorsList.map((item, i) => (
-            <tr key={i} className="bg-white border-b">
-              <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+            <tr
+              key={i}
+              className="bg-white border-b hover:bg-gray-200 cursor-pointer"
+            >
+              <td className="px-1 py-4 whitespace-nowrap text-base font-medium text-gray-900">
                 {item.doctorId}
               </td>
-              <td className="text-sm text-gray-900 font-light px-3 py-4 whitespace-nowrap">
+              <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
                 {item.doctorName}
               </td>
-              <td className="text-sm text-gray-900 font-light px-3 py-4 whitespace-nowrap">
+              <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
                 {item.doctorUsername}
               </td>
-              <td className="text-sm text-gray-900 font-light px-3 py-4 whitespace-nowrap">
+              <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
                 {item.doctorConsultationTime}
               </td>
-              <td className="text-sm text-gray-900 font-light px-3 py-4 whitespace-nowrap">
+              <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
                 {item.doctorMobile}
               </td>
-              <td className="text-sm text-gray-900 font-light px-3 py-4 whitespace-nowrap">
+              <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
                 {item.doctorEmail}
               </td>
-              <td className="text-sm text-gray-900 font-light px-3 py-4 whitespace-nowrap">
+              <td className="text-base max-w-[140px] text-gray-900 font-normal px-2 py-4">
                 {item.doctorAddress}
               </td>
-              <td className="text-sm text-gray-900 font-light px-3 py-4 whitespace-nowrap">
-                <div className="flex px-2">
+              <td className="text-base max-w-[90px] text-gray-900 font-normal px-2 py-4 whitespace-nowrap">
+                <div className="flex justify-between">
                   <input
+                    className="max-w-[80px]"
                     disabled={true}
                     value={item.doctorPassword}
                     type={item.showPassword ? "text" : "password"}
@@ -326,7 +330,7 @@ export default function Settings(props) {
                   </button>
                 </div>
               </td>
-              <td className="flex gap-1 justify-center text-sm text-gray-900 font-light px-0 py-4 whitespace-nowrap">
+              <td className="flex gap-1 justify-center text-base text-gray-900 font-normal px-0 py-4 whitespace-nowrap">
                 <button
                   onClick={(event) => {
                     event.preventDefault();
@@ -358,7 +362,7 @@ export default function Settings(props) {
                       payload: item,
                     });
                   }}
-                  className="text-white bg-green-600 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-green-500"
+                  className="text-white bg-cyan-400 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-cyan-500"
                 >
                   view
                 </button>
