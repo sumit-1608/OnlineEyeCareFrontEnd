@@ -13,7 +13,7 @@ export const ADD_DOCTORS_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/adddoct
 export const UPDATE_DOCTORS_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/updatedoctor`;
 export const DELETE_DOCTORS_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/deletedoctor`;
 
-export const FETCH_TEST_LIST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/viewdoctorslist`;
-export const ADD_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/adddoctor`;
-export const UPDATE_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/updatedoctor`;
-export const DELETE_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/deletedoctor`;
+export const FETCH_TEST_LIST_ENDPOINT = `${BACKEND_ENDPOINT}/test/api/v1/tests`;
+export const ADD_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/test/api/v1/tests`;
+export const UPDATE_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/test/api/v1/tests`;
+export const DELETE_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/test/api/v1/tests`;

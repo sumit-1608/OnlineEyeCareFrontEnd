@@ -1,46 +1,47 @@
 import { useState, useEffect } from "react";
 import { UserIcon, EyesIcon } from "../../components/SVGIcons";
 import {
-  FETCH_DOCTORS_LIST_ENDPOINT,
-  ADD_DOCTORS_ENDPOINT,
-  UPDATE_DOCTORS_ENDPOINT,
-  DELETE_DOCTORS_ENDPOINT,
+  FETCH_TEST_LIST_ENDPOINT,
+  ADD_TEST_ENDPOINT,
+  UPDATE_TEST_ENDPOINT,
+  DELETE_TEST_ENDPOINT,
 } from "../../utils/constants";
 
-import AddDoctorForm from "../../components/AddDoctorForm";
-import UpdateDoctorForm from "../../components/UpdateDoctorForm";
+import AddTestForm from "../../components/AddTestForm";
+import UpdateTestForm from "../../components/UpdateTestForm";
 import { current } from "@reduxjs/toolkit";
 
 export default function Settings(props) {
-  const [addDoctor, setAddDoctor] = useState(false);
-  const [showUpdateDoctor, setShowUpdateDoctor] = useState({
+  const [testList, setTestList] = useState([]);
+  const [addTest, setAddTest] = useState(false);
+  const [showUpdateTest, setShowUpdateTest] = useState({
     visible: false,
     payload: null,
   });
 
-  const [showDoctorViewModel, setShowDoctorViewModel] = useState({
+  const [showTestViewModel, setShowTestViewModel] = useState({
     visible: false,
     payload: null,
   });
-
-  const [doctorsList, setDoctorsList] = useState([]);
 
   useEffect(() => {
-    fetchDoctorsData();
+    fetchTestsData();
   }, []);
 
+  // "testId": 12,
+  //       "testName": "cdeghggh",
+  //       "testType": "rrhghghghghg",
+  //       "testDescription": "yyyghghgh",
+  //       "testCost": 1000002.6
+
   // DONE
-  const fetchDoctorsData = () => {
-    fetch(FETCH_DOCTORS_LIST_ENDPOINT, {
+  const fetchTestsData = () => {
+    fetch(FETCH_TEST_LIST_ENDPOINT, {
       method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
-        const converted = data.map((item) => {
-          return { ...item, showPassword: false };
-        });
-
-        setDoctorsList(converted);
+        setTestList(data);
       })
       .catch((error) => {
         console.log(error);
@@ -48,8 +49,8 @@ export default function Settings(props) {
   };
 
   // DONE
-  const onAddDoctorSubmit = (body) => {
-    fetch(ADD_DOCTORS_ENDPOINT, {
+  const onAddTestSubmit = (body) => {
+    fetch(ADD_TEST_ENDPOINT, {
       method: "POST",
       body: JSON.stringify(body),
       headers: {
@@ -61,9 +62,8 @@ export default function Settings(props) {
         alert(
           `${JSON.stringify([...Object.values(data)])} Added Successfully.`
         );
-
-        setAddDoctor(false);
-        fetchDoctorsData();
+        setAddTest(false);
+        fetchTestsData();
       })
       .catch((error) => {
         alert(`Something wents wroung!`);
@@ -71,8 +71,8 @@ export default function Settings(props) {
   };
 
   // DONE
-  const onUpdateDoctorSubmit = (body) => {
-    fetch(UPDATE_DOCTORS_ENDPOINT, {
+  const onUpdateTestSubmit = (body) => {
+    fetch(UPDATE_TEST_ENDPOINT, {
       method: "PUT",
       body: JSON.stringify(body),
       headers: {
@@ -83,37 +83,29 @@ export default function Settings(props) {
       .then((data) => {
         alert(`Updated Successfully.`);
 
-        setShowUpdateDoctor({
+        setShowUpdateTest({
           visible: false,
           payload: null,
         });
-        fetchDoctorsData();
+        fetchTestsData();
       })
       .catch((error) => {
         alert(`Something wents wroung!`);
       });
   };
 
-  // DONE
-  const deleteDoctor = (doctor_id) => {
-    fetch(`${DELETE_DOCTORS_ENDPOINT}/${doctor_id}`, {
+  const deleteTest = (test_id) => {
+    fetch(`${DELETE_TEST_ENDPOINT}/${test_id}`, {
       method: "DELETE",
     })
       .then((response) => response.json())
       .then((data) => {
-        alert(`${doctor_id} deleted successfully.`);
-        setAddDoctor(false);
-        fetchDoctorsData();
+        alert(`${test_id} deleted successfully.`);
+        fetchTestsData();
       })
       .catch((error) => {
         alert(error);
       });
-  };
-
-  const viewList = (currentObject) => {
-    delete currentObject.tests;
-    delete currentObject.showPassword;
-    return Object.keys(currentObject);
   };
 
   return (
@@ -122,88 +114,84 @@ export default function Settings(props) {
         <button
           onClick={(event) => {
             event.preventDefault();
-            setAddDoctor(!addDoctor);
+            setAddTest(!addTest);
           }}
           className="flex items-center h-10 gap-1 text-white bg-green-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-green-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Add Doctor</span>
+          <span className="uppercase font-semibold">Add Test</span>
         </button>
 
         <button
           onClick={(event) => {
             event.preventDefault();
 
-            if (showUpdateDoctor.visible) {
+            if (showUpdateTest.visible) {
               return;
             }
 
-            let data = prompt(`Enter doctor's id`);
+            let data = prompt(`Enter Test's id`);
             if (!data) {
-              alert("doctor id can not be empty.");
+              alert("Test id can not be empty.");
               return;
             }
             data = +data;
 
-            const filterd = doctorsList.filter(
-              (item) => item.doctorId === data
-            );
+            const filterd = testList.filter((item) => item.testId === data);
             if (filterd.length) {
-              setShowUpdateDoctor({
+              setShowUpdateTest({
                 payload: filterd[0],
-                visible: !showUpdateDoctor.visible,
+                visible: !showUpdateTest.visible,
               });
             } else {
-              alert("doctor id not found.");
+              alert("Test id not found.");
             }
           }}
           className="flex items-center h-10 gap-1 text-white bg-blue-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Update Doctor</span>
+          <span className="uppercase font-semibold">Update Test</span>
         </button>
 
         <button
           onClick={(event) => {
             event.preventDefault();
-            let data = prompt(`Enter doctor's id`);
+            let data = prompt(`Enter test's id`);
             if (!data) {
-              alert("doctor id can not be empty.");
+              alert("test id can not be empty.");
               return;
             }
             data = +data;
 
-            const filterd = doctorsList.filter(
-              (item) => item.doctorId === data
-            );
+            const filterd = testList.filter((item) => item.testId === data);
             if (filterd.length) {
-              deleteDoctor(data);
+              deleteTest(data);
             } else {
-              alert("doctor id not found.");
+              alert("test id not found.");
             }
           }}
           className="flex items-center h-10 gap-1 text-white bg-red-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-red-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Delete Doctor</span>
+          <span className="uppercase font-semibold">Delete Test</span>
         </button>
       </div>
 
-      {addDoctor ? <AddDoctorForm onFormSubmit={onAddDoctorSubmit} /> : null}
+      {addTest ? <AddTestForm onFormSubmit={onAddTestSubmit} /> : null}
 
-      {showUpdateDoctor.visible ? (
-        <UpdateDoctorForm
-          onFormSubmit={onUpdateDoctorSubmit}
-          payload={showUpdateDoctor.payload}
+      {showUpdateTest.visible ? (
+        <UpdateTestForm
+          onFormSubmit={onUpdateTestSubmit}
+          payload={showUpdateTest.payload}
         />
       ) : null}
 
-      {showDoctorViewModel.visible ? (
+      {showTestViewModel.visible ? (
         <div className="my-12 flex flex-col items-center bg-gray-200 rounded-lg shadow-lg">
           <div className="mt-12 flex flex-col items-start gap-2 ">
-            {viewList({ ...showDoctorViewModel.payload }).map((key) => (
+            {Object.keys(showTestViewModel.payload).map((key) => (
               <h3 className="text-xl">
-                <strong>{key}:</strong> {showDoctorViewModel.payload[key]}
+                <strong>{key}:</strong> {showTestViewModel.payload[key]}
               </h3>
             ))}
 
@@ -211,7 +199,7 @@ export default function Settings(props) {
               onClick={(event) => {
                 event.preventDefault();
 
-                setShowDoctorViewModel({
+                setShowTestViewModel({
                   visible: false,
                   payload: null,
                 });
@@ -243,101 +231,58 @@ export default function Settings(props) {
               scope="col"
               className="text-sm font-medium text-white px-3 py-4"
             >
-              Username
+              Type
             </th>
             <th
               scope="col"
               className="text-sm font-medium text-white px-3 py-4"
             >
-              Consultation Time
+              Description
             </th>
             <th
               scope="col"
               className="text-sm font-medium text-white px-3 py-4"
             >
-              Mobile
+              Cost
             </th>
             <th
               scope="col"
               className="text-sm font-medium text-white px-3 py-4"
             >
-              Email
-            </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-white px-3 py-4"
-            >
-              Address
-            </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-white px-3 py-4"
-            >
-              Password
-            </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-white px-3 py-4"
-            >
-              Action
+              Actions
             </th>
           </tr>
         </thead>
         <tbody>
-          {doctorsList.map((item, i) => (
+          {testList.map((item, i) => (
             <tr
               key={i}
               className="bg-white border-b hover:bg-gray-200 cursor-pointer"
             >
               <td className="px-1 py-4 whitespace-nowrap text-base font-medium text-gray-900">
-                {item.doctorId}
+                {item.testId}
               </td>
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.doctorName}
+                {item.testName}
               </td>
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.doctorUsername}
+                {item.testType}
               </td>
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.doctorConsultationTime}
+                {item.testDescription}
               </td>
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.doctorMobile}
+                {item.testCost}
               </td>
-              <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.doctorEmail}
-              </td>
-              <td className="text-base max-w-[140px] text-gray-900 font-normal px-2 py-4">
-                {item.doctorAddress}
-              </td>
-              <td className="text-base max-w-[90px] text-gray-900 font-normal px-2 py-4 whitespace-nowrap">
-                <div className="flex justify-between">
-                  <input
-                    className="max-w-[80px]"
-                    disabled={true}
-                    value={item.doctorPassword}
-                    type={item.showPassword ? "text" : "password"}
-                  />
-                  <button
-                    onClick={(event) => {
-                      event.preventDefault();
-                      item.showPassword = !item.showPassword;
 
-                      setDoctorsList([...doctorsList]);
-                    }}
-                  >
-                    <EyesIcon className="w-4 h-4 fill-gray-500" />
-                  </button>
-                </div>
-              </td>
               <td className="flex gap-1 justify-center text-base text-gray-900 font-normal px-0 py-4 whitespace-nowrap">
                 <button
                   onClick={(event) => {
                     event.preventDefault();
 
-                    setShowUpdateDoctor({
+                    setShowUpdateTest({
                       payload: item,
-                      visible: !showUpdateDoctor.visible,
+                      visible: !showUpdateTest.visible,
                     });
                   }}
                   className="text-white bg-green-600 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-green-500"
@@ -347,7 +292,7 @@ export default function Settings(props) {
                 <button
                   onClick={(event) => {
                     event.preventDefault();
-                    deleteDoctor(item.doctorId);
+                    deleteTest(item.testId);
                   }}
                   className="text-white bg-red-600 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-red-500"
                 >
@@ -357,7 +302,9 @@ export default function Settings(props) {
                   onClick={(event) => {
                     event.preventDefault();
 
-                    setShowDoctorViewModel({
+                    console.log(item);
+
+                    setShowTestViewModel({
                       visible: true,
                       payload: item,
                     });
