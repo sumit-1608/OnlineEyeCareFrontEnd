@@ -10,7 +10,7 @@ import {
   ClockIcon,
 } from "../components/SVGIcons";
 
-export default function AddDoctorForm(props) {
+export default function UpdateDoctorForm(props) {
   const {
     register,
     handleSubmit,
@@ -23,18 +23,18 @@ export default function AddDoctorForm(props) {
   const onSubmit = (formData) => {
     console.log(formData);
     reset();
-    props.onFormSubmit(formData);
+    props.onFormSubmit({ doctorId: props.payload.doctorId, ...formData });
   };
 
   const buildForm = [
     {
       type: "text",
       field: "doctorName",
+      value: props.payload.doctorName,
       placeholder: "Doctor Name",
       icon: <ScopeIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
         ...register("doctorName", {
-          required: "Doctor Name is Required",
           pattern: {
             value: /^[a-z ,.'-]+$/i,
             message: "Invalid Name",
@@ -53,11 +53,12 @@ export default function AddDoctorForm(props) {
     {
       type: "text",
       field: "doctorUsername",
-      placeholder: "Doctor user Name",
+
+      value: props.payload.doctorUsername,
+      placeholder: "Doctor Username",
       icon: <ScopeIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
         ...register("doctorUsername", {
-          required: "Doctor user Name is Required",
           pattern: {
             value: /^[A-Za-z0-9]+$/,
             message: "Invalid Name",
@@ -76,11 +77,12 @@ export default function AddDoctorForm(props) {
     {
       type: "text",
       field: "doctorMobile",
-      placeholder: "Number",
+      value: props.payload.doctorMobile,
+      placeholder: "Mobile Number",
+
       icon: <MobileIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
         ...register("doctorMobile", {
-          required: "Mobile Number is Required",
           pattern: {
             value: /^[0-9]+$/,
             message: "Invalid Mobile Number",
@@ -99,11 +101,12 @@ export default function AddDoctorForm(props) {
     {
       type: "email",
       field: "doctorEmail",
+      value: props.payload.doctorEmail,
       placeholder: "email",
+
       icon: <MailIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
         ...register("doctorEmail", {
-          required: "email is Required",
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
             message: "Invalid email address",
@@ -114,11 +117,13 @@ export default function AddDoctorForm(props) {
     {
       type: "password",
       field: "doctorPassword",
+
+      value: props.payload.doctorPassword,
       placeholder: "password",
+
       icon: <PasswordIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
         ...register("doctorPassword", {
-          required: "Password is Required!",
           maxLength: {
             value: 14,
             message: "Passward no longer then 14 character!",
@@ -133,23 +138,23 @@ export default function AddDoctorForm(props) {
     {
       type: "text",
       field: "doctorAddress",
+
+      value: props.payload.doctorAddress,
       placeholder: "Address",
       icon: <HomeIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
-        ...register("doctorAddress", {
-          required: "Address is Required",
-        }),
+        ...register("doctorAddress", {}),
       },
     },
     {
       type: "time",
       field: "doctorConsultationTime",
+      value: props.payload.doctorConsultationTime,
+
       placeholder: "Consultation Time",
       icon: <ClockIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
-        ...register("doctorConsultationTime", {
-          required: "Consultation Time is Required",
-        }),
+        ...register("doctorConsultationTime", {}),
       },
     },
   ];
@@ -166,8 +171,9 @@ export default function AddDoctorForm(props) {
             {item.icon}
             <input
               type={item.type}
+              defaultValue={item.value}
               className="focus:outline-none bg-gray-200 "
-              placeholder={item.placeholder}
+              placeholder={item.value.length ? item.value : item.placeholder}
               {...item.validation}
               onKeyUp={() => {
                 trigger(item.field);
@@ -187,7 +193,7 @@ export default function AddDoctorForm(props) {
         type="submit"
         className="mt-6 mb-24 px-4 py-2 bg-red-600 rounded-full w-60 text-white uppercase font-semibold hover:shadow-xl"
       >
-        Add Doctor
+        Update Doctor
       </button>
     </form>
   );

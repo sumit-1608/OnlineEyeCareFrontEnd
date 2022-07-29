@@ -1,10 +1,10 @@
-import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Doctor from './pages/Doctor';
-import Login from './pages/Login';
-import Appointment from './pages/Appointment';
-import CreateAccount from './pages/CreateAccount';
-import ResetPassword from './pages/ResetPassword';
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Doctor from "./pages/Doctor";
+import Login from "./pages/Login";
+import Appointment from "./pages/Appointment";
+import CreateAccount from "./pages/CreateAccount";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
