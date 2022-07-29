@@ -1,4 +1,4 @@
-export const BACKEND_ENDPOINT = 'http://localhost:9090'; // your backend URL
+export const BACKEND_ENDPOINT = "http://localhost:9090"; // your backend URL
 
 export const ADMIN_LOGIN_ENDPOINT = `${BACKEND_ENDPOINT}/adminLogin`;
 export const DOCTOR_LOGIN_ENDPOINT = `${BACKEND_ENDPOINT}/doctorLogin`;
@@ -12,3 +12,8 @@ export const FETCH_DOCTORS_LIST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/
 export const ADD_DOCTORS_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/adddoctor`;
 export const UPDATE_DOCTORS_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/updatedoctor`;
 export const DELETE_DOCTORS_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/deletedoctor`;
+
+export const FETCH_TEST_LIST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/viewdoctorslist`;
+export const ADD_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/adddoctor`;
+export const UPDATE_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/updatedoctor`;
+export const DELETE_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/deletedoctor`;

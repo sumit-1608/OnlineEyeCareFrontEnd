@@ -1,45 +1,45 @@
-import { useState } from 'react';
-import { DownArrowIcon, UserIcon } from './SVGIcons';
+import { useState } from "react";
+import { DownArrowIcon, UserIcon } from "./SVGIcons";
 
 export default function Container(props) {
   const { children } = props;
 
   const [navItems, setNavItems] = useState([
     {
-      label: 'Home',
-      href: '/',
+      label: "Home",
+      href: "/",
       hasDropDown: false,
     },
     {
-      label: 'Doctor',
-      href: '/doctor',
+      label: "Doctor",
+      href: "/doctor",
       hasDropDown: true,
       isMenuOpen: false,
-      dropdownData: [{ label: 'Setting', href: '/doctor/setting' }],
+      dropdownData: [{ label: "Setting", href: "/doctor/setting" }],
     },
     {
-      label: 'Appointment',
-      href: '/appointment',
+      label: "Appointment",
+      href: "/appointment",
       hasDropDown: true,
       isMenuOpen: false,
       dropdownData: [
-        { label: 'ALL', href: '/' },
-        { label: 'ALL', href: '/' },
+        { label: "ALL", href: "/" },
+        { label: "ALL", href: "/" },
       ],
     },
     {
-      label: 'Patient',
-      href: '/',
+      label: "Patient",
+      href: "/",
       hasDropDown: false,
     },
     {
-      label: 'Test',
-      href: '/',
+      label: "Test",
+      href: "/test",
       hasDropDown: false,
     },
     {
-      label: 'Contact Us',
-      href: '/',
+      label: "Contact Us",
+      href: "/",
       hasDropDown: false,
     },
   ]);
@@ -124,36 +124,38 @@ export default function Container(props) {
       {children}
 
       <footer className="text-center bg-gray-900 text-white ">
-      <div className="flex justify-center mb-6 gap-3 mt-12">
-    <a
-          href="https://instagram.com/sumeet_jain7?igshid=YmMyMTA2M2Y="
-          target={'_blank'}
-          rel="noopener noopener noreferrer"
-        >
-          <img src="/instagram.png" alt="" className="h-10 w-10" />
-        </a>
+        <div className="flex justify-center mb-6 gap-3 mt-12">
+          <a
+            href="https://instagram.com/sumeet_jain7?igshid=YmMyMTA2M2Y="
+            target={"_blank"}
+            rel="noopener noopener noreferrer"
+          >
+            <img src="/instagram.png" alt="" className="h-10 w-10" />
+          </a>
 
-        <a
-          href="https://twitter.com/sumeet_jain7?lang=en"
-          target={'_blank'}
-          rel="noopener noopener noreferrer"
-        >
-          <img src="/twitter.png" alt="" className="h-10 w-10" />
-        </a>
+          <a
+            href="https://twitter.com/sumeet_jain7?lang=en"
+            target={"_blank"}
+            rel="noopener noopener noreferrer"
+          >
+            <img src="/twitter.png" alt="" className="h-10 w-10" />
+          </a>
 
-        <a
-          href="https://accounts.google.com/signin/v2/identifier?flowName=GlifWebSignIn&flowEntry=ServiceLogin"
-          target={'_blank'}
-          rel="noopener noopener noreferrer"
-        >
-          <img src="/gmail.png" alt="" className="h-10 w-10" />
-        </a>
-    </div>
-  <div className="text-center p-4">
-    © 2022 Copyright:
-    <a className="text-whitehite ml-4" href="/">INDIA</a>
-  </div>
-</footer>
+          <a
+            href="https://accounts.google.com/signin/v2/identifier?flowName=GlifWebSignIn&flowEntry=ServiceLogin"
+            target={"_blank"}
+            rel="noopener noopener noreferrer"
+          >
+            <img src="/gmail.png" alt="" className="h-10 w-10" />
+          </a>
+        </div>
+        <div className="text-center p-4">
+          © 2022 Copyright:
+          <a className="text-whitehite ml-4" href="/">
+            INDIA
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

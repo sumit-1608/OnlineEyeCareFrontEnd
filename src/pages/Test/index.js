@@ -6,13 +6,12 @@ import Settings from "./Settings";
 export default function Doctor() {
   const sidepanal = [
     {
-      label: "Doctor",
-      href: "/doctor",
+      label: "Test",
+      href: "/test",
     },
-
     {
       label: "Setting",
-      href: "/doctor/setting",
+      href: "/Test/setting",
     },
   ];
 

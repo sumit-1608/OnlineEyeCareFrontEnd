@@ -5,7 +5,7 @@ import {
   ADD_DOCTORS_ENDPOINT,
   UPDATE_DOCTORS_ENDPOINT,
   DELETE_DOCTORS_ENDPOINT,
-} from "../../utils/constants"; //only put doctors url here
+} from "../../utils/constants";
 
 import AddDoctorForm from "../../components/AddDoctorForm";
 import UpdateDoctorForm from "../../components/UpdateDoctorForm";

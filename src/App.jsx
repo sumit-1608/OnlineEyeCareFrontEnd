@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Appointment from "./pages/Appointment";
 import CreateAccount from "./pages/CreateAccount";
 import ResetPassword from "./pages/ResetPassword";
+import Test from "./pages/Test";
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/doctor/*" element={<Doctor />} />
+        <Route path="/test/*" element={<Test />} />
+
         <Route path="/appointment" element={<Appointment />} />
       </Routes>
     </>
