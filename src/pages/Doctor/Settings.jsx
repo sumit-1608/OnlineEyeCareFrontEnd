@@ -1,5 +1,10 @@
-import { useState, useEffect } from "react";
-import { UserIcon, EyesIcon } from "../../components/SVGIcons";
+import { useEffect } from "react";
+import {
+  DeleteUserIcon,
+  EyesIcon,
+  AddUserIcon,
+  UpdateUserIcon,
+} from "../../components/SVGIcons";
 import {
   FETCH_DOCTORS_LIST_ENDPOINT,
   ADD_DOCTORS_ENDPOINT,
@@ -9,25 +14,24 @@ import {
 
 import AddDoctorForm from "../../components/AddDoctorForm";
 import UpdateDoctorForm from "../../components/UpdateDoctorForm";
-import { current } from "@reduxjs/toolkit";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  storeDoctorInRedux,
+  toggleDoctorsPassword,
+  toggleAddDoctor,
+  setUpdateDoctor,
+  setDoctorViewModel,
+  resetState,
+} from "../../config/doctorSlice";
 
 export default function Settings(props) {
-  const [addDoctor, setAddDoctor] = useState(false);
-  const [showUpdateDoctor, setShowUpdateDoctor] = useState({
-    visible: false,
-    payload: null,
-  });
-
-  const [showDoctorViewModel, setShowDoctorViewModel] = useState({
-    visible: false,
-    payload: null,
-  });
-
-  const [doctorsList, setDoctorsList] = useState([]);
+  const { doctorsList, addDoctor, showUpdateDoctor, showDoctorViewModel } =
+    useSelector((state) => state.doctorReducer);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchDoctorsData();
-  }, []);
+  });
 
   // DONE
   const fetchDoctorsData = () => {
@@ -39,8 +43,7 @@ export default function Settings(props) {
         const converted = data.map((item) => {
           return { ...item, showPassword: false };
         });
-
-        setDoctorsList(converted);
+        dispatch(storeDoctorInRedux(converted)); // redux
       })
       .catch((error) => {
         console.log(error);
@@ -61,8 +64,7 @@ export default function Settings(props) {
         alert(
           `${JSON.stringify([...Object.values(data)])} Added Successfully.`
         );
-
-        setAddDoctor(false);
+        dispatch(toggleAddDoctor(false));
         fetchDoctorsData();
       })
       .catch((error) => {
@@ -83,10 +85,12 @@ export default function Settings(props) {
       .then((data) => {
         alert(`Updated Successfully.`);
 
-        setShowUpdateDoctor({
-          visible: false,
-          payload: null,
-        });
+        dispatch(
+          setUpdateDoctor({
+            visible: false,
+            payload: null,
+          })
+        );
         fetchDoctorsData();
       })
       .catch((error) => {
@@ -102,7 +106,6 @@ export default function Settings(props) {
       .then((response) => response.json())
       .then((data) => {
         alert(`${doctor_id} deleted successfully.`);
-        setAddDoctor(false);
         fetchDoctorsData();
       })
       .catch((error) => {
@@ -122,17 +125,20 @@ export default function Settings(props) {
         <button
           onClick={(event) => {
             event.preventDefault();
-            setAddDoctor(!addDoctor);
+            dispatch(resetState());
+            dispatch(toggleAddDoctor(!addDoctor));
           }}
-          className="flex items-center h-10 gap-1 text-white bg-green-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-green-500"
+          className="flex items-center h-10 gap-1 text-white bg-green-500 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-green-600"
         >
-          <UserIcon className="w-5 h-5 fill-white" />
+          <AddUserIcon className="w-5 h-5 fill-white" />
           <span className="uppercase font-semibold">Add Doctor</span>
         </button>
 
         <button
           onClick={(event) => {
             event.preventDefault();
+
+            dispatch(resetState());
 
             if (showUpdateDoctor.visible) {
               return;
@@ -149,23 +155,28 @@ export default function Settings(props) {
               (item) => item.doctorId === data
             );
             if (filterd.length) {
-              setShowUpdateDoctor({
-                payload: filterd[0],
-                visible: !showUpdateDoctor.visible,
-              });
+              dispatch(
+                setUpdateDoctor({
+                  payload: filterd[0],
+                  visible: !showUpdateDoctor.visible,
+                })
+              );
             } else {
               alert("doctor id not found.");
             }
           }}
-          className="flex items-center h-10 gap-1 text-white bg-blue-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-500"
+          className="flex items-center h-10 gap-1 text-white bg-blue-500 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-600"
         >
-          <UserIcon className="w-5 h-5 fill-white" />
+          <UpdateUserIcon className="w-5 h-5 fill-white" />
           <span className="uppercase font-semibold">Update Doctor</span>
         </button>
 
         <button
           onClick={(event) => {
             event.preventDefault();
+
+            dispatch(resetState());
+
             let data = prompt(`Enter doctor's id`);
             if (!data) {
               alert("doctor id can not be empty.");
@@ -182,9 +193,9 @@ export default function Settings(props) {
               alert("doctor id not found.");
             }
           }}
-          className="flex items-center h-10 gap-1 text-white bg-red-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-red-500"
+          className="flex items-center h-10 gap-1 text-white bg-red-500 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-red-600"
         >
-          <UserIcon className="w-5 h-5 fill-white" />
+          <DeleteUserIcon className="w-5 h-5 fill-white" />
           <span className="uppercase font-semibold">Delete Doctor</span>
         </button>
       </div>
@@ -199,28 +210,36 @@ export default function Settings(props) {
       ) : null}
 
       {showDoctorViewModel.visible ? (
-        <div className="my-12 flex flex-col items-center bg-gray-200 rounded-lg shadow-lg">
-          <div className="mt-12 flex flex-col items-start gap-2 ">
-            {viewList({ ...showDoctorViewModel.payload }).map((key) => (
-              <h3 className="text-xl">
-                <strong>{key}:</strong> {showDoctorViewModel.payload[key]}
-              </h3>
+        <div className="my-12 flex flex-col items-center bg-gray-50 rounded-lg shadow-md">
+          <div className="mt-12 flex flex-col w-5/12">
+            {viewList({ ...showDoctorViewModel.payload }).map((key, i) => (
+              <div key={i} className="flex justify-between">
+                <h3 className="basis-1/2 text-xl font-bold capitalize">
+                  {key} :
+                </h3>
+
+                <h3 className="basis-1/2 text-lg">
+                  {showDoctorViewModel.payload[key]}
+                </h3>
+              </div>
             ))}
+          </div>
 
-            <button
-              onClick={(event) => {
-                event.preventDefault();
+          <button
+            onClick={(event) => {
+              event.preventDefault();
 
-                setShowDoctorViewModel({
+              dispatch(
+                setDoctorViewModel({
                   visible: false,
                   payload: null,
-                });
-              }}
-              className="mt-8 mb-12 bg-blue-400 hover:bg-blue-500 hover:shadow-lg px-4 py-1 rounded-lg self-center"
-            >
-              Done
-            </button>
-          </div>
+                })
+              );
+            }}
+            className="mt-8 mb-12 bg-blue-400 hover:bg-blue-500 hover:shadow-lg px-4 py-1 rounded-lg self-center"
+          >
+            Done
+          </button>
         </div>
       ) : null}
 
@@ -321,9 +340,7 @@ export default function Settings(props) {
                   <button
                     onClick={(event) => {
                       event.preventDefault();
-                      item.showPassword = !item.showPassword;
-
-                      setDoctorsList([...doctorsList]);
+                      dispatch(toggleDoctorsPassword(item)); // redux
                     }}
                   >
                     <EyesIcon className="w-4 h-4 fill-gray-500" />
@@ -334,11 +351,13 @@ export default function Settings(props) {
                 <button
                   onClick={(event) => {
                     event.preventDefault();
-
-                    setShowUpdateDoctor({
-                      payload: item,
-                      visible: !showUpdateDoctor.visible,
-                    });
+                    dispatch(resetState());
+                    dispatch(
+                      setUpdateDoctor({
+                        payload: item,
+                        visible: !showUpdateDoctor.visible,
+                      })
+                    );
                   }}
                   className="text-white bg-green-600 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-green-500"
                 >
@@ -347,6 +366,8 @@ export default function Settings(props) {
                 <button
                   onClick={(event) => {
                     event.preventDefault();
+                    dispatch(resetState());
+
                     deleteDoctor(item.doctorId);
                   }}
                   className="text-white bg-red-600 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-red-500"
@@ -356,11 +377,13 @@ export default function Settings(props) {
                 <button
                   onClick={(event) => {
                     event.preventDefault();
-
-                    setShowDoctorViewModel({
-                      visible: true,
-                      payload: item,
-                    });
+                    dispatch(resetState());
+                    dispatch(
+                      setDoctorViewModel({
+                        visible: true,
+                        payload: item,
+                      })
+                    );
                   }}
                   className="text-white bg-cyan-400 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-cyan-500"
                 >

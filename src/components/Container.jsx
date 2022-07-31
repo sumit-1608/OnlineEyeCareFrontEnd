@@ -2,7 +2,7 @@ import { useState } from "react";
 import { DownArrowIcon, UserIcon } from "./SVGIcons";
 
 export default function Container(props) {
-  const { children } = props;
+  const { children, className, pageBackgroundUrl = "" } = props;
 
   const [navItems, setNavItems] = useState([
     {
@@ -15,17 +15,15 @@ export default function Container(props) {
       href: "/doctor",
       hasDropDown: true,
       isMenuOpen: false,
-      dropdownData: [{ label: "Setting", href: "/doctor/setting" }],
+      dropdownData: [
+        { label: "Doctor", href: "/doctor" },
+        { label: "Setting", href: "/doctor/setting" },
+      ],
     },
     {
       label: "Appointment",
       href: "/appointment",
-      hasDropDown: true,
-      isMenuOpen: false,
-      dropdownData: [
-        { label: "ALL", href: "/" },
-        { label: "ALL", href: "/" },
-      ],
+      hasDropDown: false,
     },
     {
       label: "Patient",
@@ -45,7 +43,12 @@ export default function Container(props) {
   ]);
 
   return (
-    <div className="min-h-screen  flex flex-col justify-between">
+    <div
+      className={`min-h-screen flex flex-col justify-between ${className}`}
+      style={{
+        backgroundImage: `url("${pageBackgroundUrl}")`,
+      }}
+    >
       {navItems.filter((a) => a.isMenuOpen === true).length ? (
         <button
           onClick={(event) => {
@@ -59,7 +62,7 @@ export default function Container(props) {
 
             setNavItems([...navItems]);
           }}
-          className="absolute z-[2] h-screen w-screen bg-gray-50 opacity-20"
+          className="absolute z-[2] h-screen w-screen bg-transparent"
         />
       ) : null}
 
@@ -71,7 +74,7 @@ export default function Container(props) {
 
           <a
             href="/login"
-            className="flex items-center h-10 gap-2 text-white bg-blue-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-500"
+            className="flex items-center h-10 gap-2 text-white bg-blue-500 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-600"
           >
             <UserIcon className="w-5 h-5 fill-white" />
             <span className="uppercase font-semibold">Login</span>
@@ -87,7 +90,7 @@ export default function Container(props) {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="hover:underline underline-offset-8 text-gray-500 text-lg font-light cursor-pointer uppercase"
+                  className="hover:underline underline-offset-8 text-gray-900 text-lg font-bold cursor-pointer uppercase"
                 >
                   {item.label}
                 </a>
@@ -105,11 +108,11 @@ export default function Container(props) {
               </div>
 
               {item.isMenuOpen && (
-                <div className="absolute z-20 w-48 py-2 mt-2 bg-white rounded-md shadow-xl dark:bg-gray-800">
+                <div className="absolute z-10 w-48 mt-2 bg-white shadow-x">
                   {item.dropdownData.map((dropitems) => (
                     <a
                       href={dropitems.href}
-                      className="flex items-center px-3 py-3 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white fill-gray-600 dark:fill-gray-300 dark:hover:fill-white"
+                      className="flex items-center px-3 py-3 text-base font-semibold text-black capitalize transition-colors duration-200 transform hover:bg-gray-200 fill-gray-600"
                     >
                       <span className="mx-1">{dropitems.label}</span>
                     </a>
@@ -123,7 +126,7 @@ export default function Container(props) {
 
       {children}
 
-      <footer className="text-center bg-gray-900 text-white ">
+      <footer className="mt-44 text-center bg-gray-900 text-white ">
         <div className="flex justify-center mb-6 gap-3 mt-12">
           <a
             href="https://instagram.com/sumeet_jain7?igshid=YmMyMTA2M2Y="

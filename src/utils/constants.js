@@ -13,7 +13,12 @@ export const ADD_DOCTORS_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/adddoct
 export const UPDATE_DOCTORS_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/updatedoctor`;
 export const DELETE_DOCTORS_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/deletedoctor`;
 
-export const FETCH_TEST_LIST_ENDPOINT = `${BACKEND_ENDPOINT}/test/api/v1/tests`;
-export const ADD_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/test/api/v1/tests`;
-export const UPDATE_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/test/api/v1/tests`;
-export const DELETE_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/test/api/v1/tests`;
+export const FETCH_TEST_LIST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/alltests`;
+export const ADD_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/test/add`;
+export const UPDATE_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/test/update`;
+export const DELETE_TEST_ENDPOINT = `${BACKEND_ENDPOINT}/onlineeyeclinic/test/remove`;
+
+export const FETCH_APPOINTMENT_LIST_ENDPOINT = `${BACKEND_ENDPOINT}/v1/viewallappointments`;
+export const ADD_APPOINTMENT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/bookappointment`;
+export const UPDATE_APPOINTMENT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/updateappointment`;
+export const DELETE_APPOINTMENT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/cancelappointment`;

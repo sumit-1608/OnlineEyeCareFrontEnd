@@ -13,8 +13,6 @@ export default function Home() {
   return (
     <Container>
       <CarouselSlider imageList={imageList} />
-
-      <h1 className="text-xl">Welcome bot</h1>
     </Container>
   );
 }

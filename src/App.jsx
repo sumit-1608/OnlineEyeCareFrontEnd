@@ -17,8 +17,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/doctor/*" element={<Doctor />} />
         <Route path="/test/*" element={<Test />} />
-
-        <Route path="/appointment" element={<Appointment />} />
+        <Route path="/appointment/*" element={<Appointment />} />
       </Routes>
     </>
   );
