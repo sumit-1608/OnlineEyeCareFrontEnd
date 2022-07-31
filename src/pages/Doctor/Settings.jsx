@@ -31,7 +31,7 @@ export default function Settings(props) {
 
   useEffect(() => {
     fetchDoctorsData();
-  });
+  }, []);
 
   // DONE
   const fetchDoctorsData = () => {
@@ -339,7 +339,6 @@ export default function Settings(props) {
                   />
                   <button
                     onClick={(event) => {
-                      event.preventDefault();
                       dispatch(toggleDoctorsPassword(item)); // redux
                     }}
                   >

@@ -88,13 +88,13 @@ export default function Settings(props) {
       });
   };
 
-  const deleteTest = (test_id) => {
-    fetch(`${DELETE_APPOINTMENT_ENDPOINT}/${test_id}`, {
+  const deleteTest = (appointment_id) => {
+    fetch(`${DELETE_APPOINTMENT_ENDPOINT}/${appointment_id}`, {
       method: "DELETE",
     })
       .then((response) => response.json())
       .then((data) => {
-        alert(`${test_id} deleted successfully.`);
+        alert(`${appointment_id} deleted successfully.`);
         fetchAppointmentsData();
       })
       .catch((error) => {

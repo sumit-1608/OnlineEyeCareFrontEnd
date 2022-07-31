@@ -60,7 +60,7 @@ export default function UpdateDoctorForm(props) {
       validation: {
         ...register("doctorUsername", {
           pattern: {
-            value: /^[A-Za-z0-9]+$/,
+            value: /^[A-Za-z0-9_]+$/,
             message: "Invalid Name",
           },
           maxLength: {

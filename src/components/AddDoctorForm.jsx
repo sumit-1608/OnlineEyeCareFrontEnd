@@ -59,7 +59,7 @@ export default function AddDoctorForm(props) {
         ...register("doctorUsername", {
           required: "Doctor user Name is Required",
           pattern: {
-            value: /^[A-Za-z0-9]+$/,
+            value: /^[A-Za-z0-9_]+$/,
             message: "Invalid Name",
           },
           maxLength: {
