@@ -6,6 +6,9 @@ import Appointment from "./pages/Appointment";
 import CreateAccount from "./pages/CreateAccount";
 import ResetPassword from "./pages/ResetPassword";
 import Test from "./pages/Test";
+import Patient from "./pages/Patient";
+
+import Admin from "./pages/Admin";
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
         <Route path="/doctor/*" element={<Doctor />} />
         <Route path="/test/*" element={<Test />} />
         <Route path="/appointment/*" element={<Appointment />} />
+        <Route path="/patient/*" element={<Patient />} />
+
+        <Route path="/admin/*" element={<Admin />} />
       </Routes>
     </>
   );

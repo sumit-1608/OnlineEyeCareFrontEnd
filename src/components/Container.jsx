@@ -1,5 +1,11 @@
+/* imported useState hook from react
+ */
+
 import { useState } from "react";
 import { DownArrowIcon, UserIcon } from "./SVGIcons";
+
+/* Created Container functional component and written html code
+ */
 
 export default function Container(props) {
   const { children, className, pageBackgroundUrl = "" } = props;
@@ -10,6 +16,7 @@ export default function Container(props) {
       href: "/",
       hasDropDown: false,
     },
+
     {
       label: "Doctor",
       href: "/doctor",
@@ -23,21 +30,51 @@ export default function Container(props) {
     {
       label: "Appointment",
       href: "/appointment",
-      hasDropDown: false,
+      hasDropDown: true,
+      isMenuOpen: false,
+      dropdownData: [
+        { label: "Appointment", href: "/appointment" },
+        { label: "Setting", href: "/appointment/setting" },
+      ],
     },
     {
       label: "Patient",
-      href: "/",
-      hasDropDown: false,
+      href: "/patient",
+      hasDropDown: true,
+      isMenuOpen: false,
+      dropdownData: [
+        { label: "Patient", href: "/patient" },
+        { label: "Setting", href: "/patient/setting" },
+      ],
     },
     {
       label: "Test",
       href: "/test",
+      hasDropDown: true,
+      isMenuOpen: false,
+      dropdownData: [
+        { label: "Test", href: "/test" },
+        { label: "Setting", href: "/test/setting" },
+      ],
+    },
+    {
+      label: "Report",
+      href: "/report",
+      hasDropDown: true,
+      isMenuOpen: false,
+      dropdownData: [
+        { label: "Report", href: "/report" },
+        { label: "Setting", href: "/report/setting" },
+      ],
+    },
+    {
+      label: "Admin",
+      href: "/admin",
       hasDropDown: false,
     },
     {
       label: "Contact Us",
-      href: "/",
+      href: "/contactus",
       hasDropDown: false,
     },
   ]);
@@ -74,10 +111,10 @@ export default function Container(props) {
 
           <a
             href="/login"
-            className="flex items-center h-10 gap-2 text-white bg-blue-500 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-600"
+            className="flex items-center h-10 gap-2 text-white bg-green-500 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-green-600"
           >
             <UserIcon className="w-5 h-5 fill-white" />
-            <span className="uppercase font-semibold">Login</span>
+            <span className="uppercase font-semibold">Log in</span>
           </a>
         </div>
 

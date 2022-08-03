@@ -3,22 +3,22 @@ import Container from "../../components/Container";
 import Main from "./Main";
 import Settings from "./Settings";
 
-export default function appointment() {
+export default function Patient() {
   const sidepanal = [
     {
-      label: "Appointment",
-      href: "/appointment",
+      label: "Patient",
+      href: "/patient",
     },
     {
-      label: "Setting",
-      href: "/Appointment/settings",
+      label: "Settings",
+      href: "/Patient/settings",
     },
   ];
 
   return (
     <Container
       pageBackgroundUrl={
-        "https://www.telemedinc.com/wp-content/uploads/2020/01/telemed-banner.jpg"
+        "https://www.consensusortho.com/wp-content/uploads/2019/10/Blog-Website-Header_Importance-of-Doctor-Patient-Relationship-Blog.png"
       }
       className="bg-no-repeat  bg-cover bg-center"
     >

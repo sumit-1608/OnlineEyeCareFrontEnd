@@ -3,15 +3,15 @@ import Container from "../../components/Container";
 import Main from "./Main";
 import Settings from "./Settings";
 
-export default function appointment() {
+export default function admin() {
   const sidepanal = [
     {
       label: "Appointment",
-      href: "/appointment",
+      href: "/admin",
     },
     {
       label: "Setting",
-      href: "/Appointment/settings",
+      href: "/Admin/settings",
     },
   ];
 

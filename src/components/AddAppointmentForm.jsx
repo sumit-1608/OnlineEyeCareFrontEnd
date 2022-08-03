@@ -1,5 +1,10 @@
 import { useForm } from "react-hook-form";
-import { ErrorIcon, ScopeIcon, MobileIcon } from "../components/SVGIcons";
+import {
+  ErrorIcon,
+  ScopeIcon,
+  ClockIcon,
+  MobileIcon,
+} from "../components/SVGIcons";
 
 export default function AddAppointmentForm(props) {
   const {
@@ -19,77 +24,38 @@ export default function AddAppointmentForm(props) {
 
   const buildForm = [
     {
-      type: "text",
-      field: "appointmentName",
-      placeholder: "appointment Name",
-      icon: <ScopeIcon className="h-5 w-5 fill-gray-500" />,
+      type: "date",
+      field: "dateOfAppointment",
+      placeholder: "Appointment Date",
+      icon: <ClockIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
-        ...register("appointmentName", {
-          required: "appointment Name is Required",
-          pattern: {
-            value: /^[a-z ,.'-]+$/i,
-            message: "Invalid Name",
-          },
-          maxLength: {
-            value: 14,
-            message: "appointment Name no longer then 14 character!",
-          },
-          minLength: {
-            value: 6,
-            message: "appointment Name can be minimum 6 character!",
-          },
+        ...register("dateOfAppointment", {
+          required: "Appointment Date is Required",
+        }),
+      },
+    },
+    {
+      type: "time",
+      field: "timeOfAppointment",
+      placeholder: "Appointment Time",
+      icon: <ClockIcon className="h-5 w-5 fill-gray-500" />,
+      validation: {
+        ...register("timeOfAppointment", {
+          required: "Appointment Time is Required",
         }),
       },
     },
     {
       type: "text",
-      field: "appointmentType",
-      placeholder: "Test Type ",
-      icon: <ScopeIcon className="h-5 w-5 fill-gray-500" />,
-      validation: {
-        ...register("testType", {
-          required: "Test Type is Required",
-          pattern: {
-            value: /^[A-Za-z0-9]+$/,
-            message: "Invalid Test Type",
-          },
-          maxLength: {
-            value: 14,
-            message: "Test Type no longer then 14 character!",
-          },
-          minLength: {
-            value: 6,
-            message: "Test Type can be minimum 6 character!",
-          },
-        }),
-      },
-    },
-    {
-      type: "text",
-      field: "testDescription",
-      placeholder: "Description",
+      field: "consultationFee",
+      placeholder: "Fees",
       icon: <MobileIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
-        ...register("testDescription", {
-          required: "Descriptionr is Required",
-          pattern: {
-            value: /^[0-9a-z ,.'-]+$/i,
-            message: "Invalid Descriptionr",
-          },
-        }),
-      },
-    },
-    {
-      type: "text",
-      field: "testCost",
-      placeholder: "Cost",
-      icon: <MobileIcon className="h-5 w-5 fill-gray-500" />,
-      validation: {
-        ...register("testCost", {
-          required: "Cost is Required",
+        ...register("consultationFee", {
+          required: "Fees is Required",
           pattern: {
             value: /^[0-9.]+$/,
-            message: "Invalid Cost",
+            message: "Invalid Fees",
           },
         }),
       },

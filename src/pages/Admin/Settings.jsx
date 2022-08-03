@@ -1,43 +1,47 @@
 import { useState, useEffect } from "react";
 import { UserIcon, EyesIcon } from "../../components/SVGIcons";
 import {
-  FETCH_TEST_LIST_ENDPOINT,
-  ADD_TEST_ENDPOINT,
-  UPDATE_TEST_ENDPOINT,
-  DELETE_TEST_ENDPOINT,
+  FETCH_ADMIN_LIST_ENDPOINT,
+  ADD_ADMIN_ENDPOINT,
+  UPDATE_ADMIN_ENDPOINT,
+  DELETE_ADMIN_ENDPOINT,
 } from "../../utils/constants";
 
-import AddTestForm from "../../components/AddTestForm";
-import UpdateTestForm from "../../components/UpdateTestForm";
+import AddAdminForm from "../../components/AddAdminForm";
+import UpdateAdminForm from "../../components/UpdateAdminForm";
 import { current } from "@reduxjs/toolkit";
-
-import { useSelector, useDispatch } from "react-redux";
-import {
-  storeTestInRedux,
-  toggleAddTest,
-  resetState,
-  setUpdateTest,
-  setTestViewModel,
-} from "../../config/testSlice";
+import moment from "moment";
 
 export default function Settings(props) {
-  const { testList, addTest, showUpdateTest, showTestViewModel } = useSelector(
-    (state) => state.testReducer
-  );
-  const dispatch = useDispatch();
+  const [adminList, setAdminList] = useState([]);
+  const [addAdmin, setAddAdmin] = useState(false);
+  const [showUpdateAdmin, setShowUpdatAdmin] = useState({
+    visible: false,
+    payload: null,
+  });
+
+  const [showAdminViewModel, setShowAdminViewModel] = useState({
+    visible: false,
+    payload: null,
+  });
 
   useEffect(() => {
-    fetchTestsData();
+    fetchAdminsData();
   }, []);
 
   // DONE
-  const fetchTestsData = () => {
-    fetch(FETCH_TEST_LIST_ENDPOINT, {
+  const fetchAdminsData = () => {
+    fetch(FETCH_ADMIN_LIST_ENDPOINT, {
       method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
-        dispatch(storeTestInRedux(data));
+        const converted = data.map((item) => {
+          delete item.doctor_Id;
+          return item;
+        });
+
+        setAdminList(converted);
       })
       .catch((error) => {
         console.log(error);
@@ -45,8 +49,8 @@ export default function Settings(props) {
   };
 
   // DONE
-  const onAddTestSubmit = (body) => {
-    fetch(ADD_TEST_ENDPOINT, {
+  const onAddAdminSubmit = (body) => {
+    fetch(ADD_ADMIN_ENDPOINT, {
       method: "POST",
       body: JSON.stringify(body),
       headers: {
@@ -58,8 +62,8 @@ export default function Settings(props) {
         alert(
           `${JSON.stringify([...Object.values(data)])} Added Successfully.`
         );
-        dispatch(toggleAddTest(false));
-        fetchTestsData();
+        setAddAdmin(false);
+        fetchAdminsData();
       })
       .catch((error) => {
         alert(`Something wents wroung!`);
@@ -67,8 +71,8 @@ export default function Settings(props) {
   };
 
   // DONE
-  const onUpdateTestSubmit = (body) => {
-    fetch(UPDATE_TEST_ENDPOINT, {
+  const onUpdateAdminSubmit = (body) => {
+    fetch(UPDATE_ADMIN_ENDPOINT, {
       method: "PUT",
       body: JSON.stringify(body),
       headers: {
@@ -79,29 +83,28 @@ export default function Settings(props) {
       .then((data) => {
         alert(`Updated Successfully.`);
 
-        dispatch(
-          setUpdateTest({
-            visible: false,
-            payload: null,
-          })
-        );
-        fetchTestsData();
+        setShowUpdatAdmin({
+          visible: false,
+          payload: null,
+        });
+        fetchAdminsData();
       })
       .catch((error) => {
         alert(`Something wents wroung!`);
       });
   };
 
-  const deleteTest = (test_id) => {
-    fetch(`${DELETE_TEST_ENDPOINT}/${test_id}`, {
+  const deleteTest = (appointment_id) => {
+    fetch(`${DELETE_ADMIN_ENDPOINT}/${appointment_id}`, {
       method: "DELETE",
     })
       .then((response) => response.json())
       .then((data) => {
-        alert(`${test_id} deleted successfully.`);
-        fetchTestsData();
+        alert(`${appointment_id} deleted successfully.`);
+        fetchAdminsData();
       })
       .catch((error) => {
+        console.log(error);
         alert(error);
       });
   };
@@ -112,21 +115,19 @@ export default function Settings(props) {
         <button
           onClick={(event) => {
             event.preventDefault();
-
-            dispatch(resetState());
-            dispatch(toggleAddTest(!addTest));
+            setAddAdmin(!addAdmin);
           }}
           className="flex items-center h-10 gap-1 text-white bg-blue-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Add Test</span>
+          <span className="uppercase font-semibold">Book Appointment</span>
         </button>
 
         {/* <button
           onClick={(event) => {
             event.preventDefault();
 
-            if (showUpdateTest.visible) {
+            if (showUpdateAppointment.visible) {
               return;
             }
 
@@ -137,11 +138,13 @@ export default function Settings(props) {
             }
             data = +data;
 
-            const filterd = testList.filter((item) => item.testId === data);
+            const filterd = appointmentList.filter(
+              (item) => item.testId === data
+            );
             if (filterd.length) {
-              setShowUpdateTest({
+              setShowUpdatAppointment({
                 payload: filterd[0],
-                visible: !showUpdateTest.visible,
+                visible: !showUpdateAppointment.visible,
               });
             } else {
               alert("Test id not found.");
@@ -150,10 +153,10 @@ export default function Settings(props) {
           className="flex items-center h-10 gap-1 text-white bg-blue-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Update Test</span>
-        </button> */}
+          <span className="uppercase font-semibold">Update Appointment</span>
+        </button>
 
-        {/* <button
+        <button
           onClick={(event) => {
             event.preventDefault();
             let data = prompt(`Enter test's id`);
@@ -163,7 +166,9 @@ export default function Settings(props) {
             }
             data = +data;
 
-            const filterd = testList.filter((item) => item.testId === data);
+            const filterd = appointmentList.filter(
+              (item) => item.testId === data
+            );
             if (filterd.length) {
               deleteTest(data);
             } else {
@@ -173,25 +178,25 @@ export default function Settings(props) {
           className="flex items-center h-10 gap-1 text-white bg-red-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-red-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Delete Test</span>
+          <span className="uppercase font-semibold">Delete Appointment</span>
         </button> */}
       </div>
 
-      {addTest ? <AddTestForm onFormSubmit={onAddTestSubmit} /> : null}
+      {addAdmin ? <AddAdminForm onFormSubmit={onAddAdminSubmit} /> : null}
 
-      {showUpdateTest.visible ? (
-        <UpdateTestForm
-          onFormSubmit={onUpdateTestSubmit}
-          payload={showUpdateTest.payload}
+      {showUpdateAdmin.visible ? (
+        <UpdateAdminForm
+          onFormSubmit={onUpdateAdminSubmit}
+          payload={showUpdateAdmin.payload}
         />
       ) : null}
 
-      {showTestViewModel.visible ? (
+      {showAdminViewModel.visible ? (
         <div className="my-12 flex flex-col items-center bg-gray-200 rounded-lg shadow-lg">
           <div className="mt-12 flex flex-col items-start gap-2 ">
-            {Object.keys(showTestViewModel.payload).map((key) => (
-              <h3 className="text-xl">
-                <strong>{key}:</strong> {showTestViewModel.payload[key]}
+            {Object.keys(showAdminViewModel.payload).map((key) => (
+              <h3 key={key} className="text-xl">
+                <strong>{key}:</strong> {showAdminViewModel.payload[key]}
               </h3>
             ))}
 
@@ -199,12 +204,10 @@ export default function Settings(props) {
               onClick={(event) => {
                 event.preventDefault();
 
-                dispatch(
-                  setTestViewModel({
-                    visible: false,
-                    payload: null,
-                  })
-                );
+                setShowAdminViewModel({
+                  visible: false,
+                  payload: null,
+                });
               }}
               className="mt-8 mb-12 bg-blue-400 hover:bg-blue-500 hover:shadow-lg px-4 py-1 rounded-lg self-center"
             >
@@ -221,25 +224,19 @@ export default function Settings(props) {
               scope="col"
               className="text-sm font-medium text-white px-3 py-4"
             >
-              Name
+              Date
             </th>
             <th
               scope="col"
               className="text-sm font-medium text-white px-3 py-4"
             >
-              Type
+              Time
             </th>
             <th
               scope="col"
               className="text-sm font-medium text-white px-3 py-4"
             >
-              Description
-            </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-white px-3 py-4"
-            >
-              Cost
+              Fees
             </th>
             <th
               scope="col"
@@ -250,22 +247,19 @@ export default function Settings(props) {
           </tr>
         </thead>
         <tbody>
-          {testList.map((item, i) => (
+          {adminList.map((item, i) => (
             <tr
               key={i}
               className="bg-white border-b hover:bg-gray-200 cursor-pointer"
             >
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.testName}
+                {item.dateOfAppointment}
               </td>
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.testType}
+                {item.timeOfAppointment}
               </td>
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.testDescription}
-              </td>
-              <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.testCost}
+                {item.consultationFee}
               </td>
 
               <td className="flex gap-1 justify-center text-base text-gray-900 font-normal px-0 py-4 whitespace-nowrap">
@@ -273,13 +267,10 @@ export default function Settings(props) {
                   onClick={(event) => {
                     event.preventDefault();
 
-                    dispatch(resetState());
-                    dispatch(
-                      setUpdateTest({
-                        payload: item,
-                        visible: !showUpdateTest.visible,
-                      })
-                    );
+                    setShowUpdatAdmin({
+                      payload: item,
+                      visible: !showUpdateAdmin.visible,
+                    });
                   }}
                   className="text-white bg-green-600 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-green-500"
                 >
@@ -297,13 +288,10 @@ export default function Settings(props) {
                 <button
                   onClick={(event) => {
                     event.preventDefault();
-                    dispatch(resetState());
-                    dispatch(
-                      setTestViewModel({
-                        visible: true,
-                        payload: item,
-                      })
-                    );
+                    setShowAdminViewModel({
+                      visible: true,
+                      payload: item,
+                    });
                   }}
                   className="text-white bg-cyan-400 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-cyan-500"
                 >

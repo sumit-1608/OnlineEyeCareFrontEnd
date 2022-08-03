@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { ErrorIcon, ScopeIcon, MobileIcon } from "../components/SVGIcons";
 
-export default function UpdateAppointmentForm(props) {
+export default function UpdateTestForm(props) {
   const {
     register,
     handleSubmit,
@@ -13,86 +13,118 @@ export default function UpdateAppointmentForm(props) {
   const onSubmit = (formData) => {
     console.log(formData);
     reset();
-    props.onFormSubmit({ testId: props.payload.testId, ...formData });
+    props.onFormSubmit({ patientId: props.payload.patientId, ...formData });
   };
 
   const buildForm = [
     {
       type: "text",
-      field: "testName",
-      placeholder: " Name",
-      value: props.payload.testName,
+      field: "patientName",
+      placeholder: "Patient Name",
       icon: <ScopeIcon className="h-5 w-5 fill-gray-500" />,
+      value: props.payload.patientName,
       validation: {
-        ...register("Name", {
-          required: "Test Name is Required",
+        ...register("patientName", {
+          required: "Patient Name is Required",
           pattern: {
             value: /^[a-z ,.'-]+$/i,
             message: "Invalid Name",
           },
           maxLength: {
             value: 14,
-            message: "Test Name no longer then 14 character!",
+            message: "Patient Name no longer then 14 character!",
           },
           minLength: {
             value: 6,
-            message: "Test Name can be minimum 6 character!",
+            message: "Patient Name can be minimum 6 character!",
           },
         }),
       },
     },
     {
       type: "text",
-      field: "testType",
-      value: props.payload.testType,
-      placeholder: "Test Type ",
+      field: "patientUserName",
+      placeholder: "Username ",
       icon: <ScopeIcon className="h-5 w-5 fill-gray-500" />,
+      value: props.payload.patientUserName,
       validation: {
-        ...register("testType", {
-          required: "Test Type is Required",
+        ...register("patientUserName", {
+          required: "Username is Required",
           pattern: {
             value: /^[A-Za-z0-9]+$/,
-            message: "Invalid Test Type",
+            message: "Invalid Username",
           },
           maxLength: {
             value: 14,
-            message: "Test Type no longer then 14 character!",
+            message: "Username no longer then 14 character!",
           },
           minLength: {
             value: 6,
-            message: "Test Type can be minimum 6 character!",
+            message: "Username can be minimum 6 character!",
           },
         }),
       },
     },
     {
-      type: "text",
-      field: "testDescription",
-      value: props.payload.testDescription,
-      placeholder: "Description",
+      type: "email",
+      field: "patientEmail",
+      placeholder: "Email",
       icon: <MobileIcon className="h-5 w-5 fill-gray-500" />,
+      value: props.payload.patientEmail,
       validation: {
-        ...register("testDescription", {
-          required: "Descriptionr is Required",
+        ...register("patientEmail", {
+          required: "Email is Required",
+        }),
+      },
+    },
+    {
+      type: "date",
+      field: "patientDOB",
+      placeholder: "DOB",
+      icon: <MobileIcon className="h-5 w-5 fill-gray-500" />,
+      value: props.payload.patientDOB,
+      validation: {
+        ...register("patientDOB", {
+          required: "DOB is Required",
+        }),
+      },
+    },
+    {
+      type: "number",
+      field: "patientMobile",
+      placeholder: "Mobile",
+      icon: <MobileIcon className="h-5 w-5 fill-gray-500" />,
+      value: props.payload.patientMobile,
+      validation: {
+        ...register("patientMobile", {
+          required: "Mobile is Required",
+        }),
+      },
+    },
+    {
+      type: "number",
+      field: "patientAge",
+      placeholder: "Age",
+      icon: <MobileIcon className="h-5 w-5 fill-gray-500" />,
+      value: props.payload.patientAge,
+      validation: {
+        ...register("patientAge", {
+          required: "Age is Required",
+        }),
+      },
+    },
+    {
+      type: "Password",
+      field: "patientPassword",
+      placeholder: "Password",
+      icon: <MobileIcon className="h-5 w-5 fill-gray-500" />,
+      value: props.payload.patientPassword,
+      validation: {
+        ...register("patientPassword", {
+          required: "Password is Required",
           pattern: {
             value: /^[0-9a-z ,.'-]+$/i,
-            message: "Invalid Descriptionr",
-          },
-        }),
-      },
-    },
-    {
-      type: "text",
-      field: "testCost",
-      value: props.payload.testCost,
-      placeholder: "Cost",
-      icon: <MobileIcon className="h-5 w-5 fill-gray-500" />,
-      validation: {
-        ...register("testCost", {
-          required: "Cost is Required",
-          pattern: {
-            value: /^[0-9.]+$/,
-            message: "Invalid Cost",
+            message: "Invalid Password",
           },
         }),
       },

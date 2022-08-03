@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-import { UserIcon, PasswordIcon, ErrorIcon } from '../components/SVGIcons';
-import AuthFooter from '../components/AuthFooter';
+import { UserIcon, PasswordIcon, ErrorIcon } from "../components/SVGIcons";
+import AuthFooter from "../components/AuthFooter";
 
 import {
   ADMIN_LOGIN_ENDPOINT,
   DOCTOR_LOGIN_ENDPOINT,
   PATIENT_LOGIN_ENDPOINT,
-} from '../utils/constants';
+} from "../utils/constants";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -25,61 +25,55 @@ export default function Login() {
   const onSubmit = (formData) => {
     console.log(formData);
     reset();
-    let fetchURL = PATIENT_LOGIN_ENDPOINT;
+    let fetchURL = PATIENT_LOGIN_ENDPOINT; //urls bhej
 
-    if (formData.role === 'admin') {
+    if (formData.role === "admin") {
       fetchURL = ADMIN_LOGIN_ENDPOINT;
-    } else if (formData.role === 'doctor') {
+    } else if (formData.role === "doctor") {
       fetchURL = DOCTOR_LOGIN_ENDPOINT;
     }
 
-    //NOTE: use it when backend is running
-
-    // fetch(fetchURL, {
-    //   method: 'POST',
-    //   body: JSON.stringify(formData),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
-    navigate('/', { replace: true });
+    fetch(fetchURL, {
+      method: "POST",
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        navigate("/", { replace: true });
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
   };
 
   const buildForm = [
     {
-      field: 'email',
-      placeholder: 'email',
+      type: "text",
+      field: "username",
+      placeholder: "Username",
       icon: <UserIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
-        ...register('email', {
-          required: 'email is Required',
-          pattern: {
-            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: 'Invalid email address',
-          },
+        ...register("username", {
+          required: "Username is Required",
         }),
       },
     },
     {
-     
-      field: 'password',
-      placeholder: 'password',
+      type: "password",
+      field: "password",
+      placeholder: "password",
       icon: <PasswordIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
-        ...register('password', {
-          required: 'Password is Required!',
+        ...register("password", {
+          required: "Password is Required!",
           maxLength: {
             value: 14,
-            message: 'Passward no longer then 14 character!',
+            message: "Passward no longer then 14 character!",
           },
           minLength: {
             value: 6,
-            message: 'Passward can be minimum 6 character!',
+            message: "Passward can be minimum 6 character!",
           },
         }),
       },
@@ -94,7 +88,7 @@ export default function Login() {
       }}
     >
       <a href="/">
-      <img className="h-28 w-[270px]" src={`/logo.png`} alt="" />
+        <img className="h-28 w-[270px]" src={`/logo.png`} alt="" />
       </a>
       <h1 className="font-bold text-4xl mt-10 ">Contiune to Login</h1>
 
@@ -108,7 +102,7 @@ export default function Login() {
             <div className="w-80 flex items-center gap-3 border-2 hover:border-gray-400 bg-white rounded-full px-3 py-2">
               {item.icon}
               <input
-                type="text"
+                type={item.type}
                 className="focus:outline-none bg-white "
                 placeholder={item.placeholder}
                 {...item.validation}
@@ -132,11 +126,10 @@ export default function Login() {
             <select
               id="countries"
               className="bg-white focus:outline-none text-gray-900 text-sm rounded-lg block w-full"
-              {...register('role', {
-                required: 'Role is Required!',
+              {...register("role", {
+                required: "Role is Required!",
               })}
             >
-              
               <option value="patient">Patient</option>
               <option value="doctor">Doctor</option>
               <option value="admin">Admin</option>

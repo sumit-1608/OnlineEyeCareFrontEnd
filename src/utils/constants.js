@@ -22,3 +22,18 @@ export const FETCH_APPOINTMENT_LIST_ENDPOINT = `${BACKEND_ENDPOINT}/v1/viewallap
 export const ADD_APPOINTMENT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/bookappointment`;
 export const UPDATE_APPOINTMENT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/updateappointment`;
 export const DELETE_APPOINTMENT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/cancelappointment`;
+
+export const FETCH_PATIENT_LIST_ENDPOINT = `${BACKEND_ENDPOINT}/v1/patient/viewpatientlist`;
+export const ADD_PATIENT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/patient/addpatient`;
+export const UPDATE_PATIENT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/patient/updatepatient`;
+export const DELETE_PATIENT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/patient/delete`;
+
+export const FETCH_REPORT_LIST_ENDPOINT = `${BACKEND_ENDPOINT}/v1/allreportsbydate`;
+export const ADD_REPORT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/addreport`;
+export const UPDATE_REPORT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/updatereport`;
+export const DELETE_REPORT_ENDPOINT = `${BACKEND_ENDPOINT}/v1/delete`;
+
+export const FETCH_ADMIN_LIST_ENDPOINT = `${BACKEND_ENDPOINT}/v1/allreportsbydate`;
+export const ADD_ADMIN_ENDPOINT = `${BACKEND_ENDPOINT}/v1/addreport`;
+export const UPDATE_ADMIN_ENDPOINT = `${BACKEND_ENDPOINT}/v1/updatereport`;
+export const DELETE_ADMIN_ENDPOINT = `${BACKEND_ENDPOINT}/v1/delete`;

@@ -10,6 +10,7 @@ import {
 import AddAppointmentForm from "../../components/AddAppointmentForm";
 import UpdateAppointmentForm from "../../components/UpdateAppointmentForm";
 import { current } from "@reduxjs/toolkit";
+import moment from "moment";
 
 export default function Settings(props) {
   const [appointmentList, setAppointmentList] = useState([]);
@@ -35,7 +36,12 @@ export default function Settings(props) {
     })
       .then((response) => response.json())
       .then((data) => {
-        setAppointmentList(data);
+        const converted = data.map((item) => {
+          delete item.doctor_Id;
+          return item;
+        });
+
+        setAppointmentList(converted);
       })
       .catch((error) => {
         console.log(error);
@@ -98,6 +104,7 @@ export default function Settings(props) {
         fetchAppointmentsData();
       })
       .catch((error) => {
+        console.log(error);
         alert(error);
       });
   };
@@ -110,13 +117,13 @@ export default function Settings(props) {
             event.preventDefault();
             setAddAppointment(!addAppointment);
           }}
-          className="flex items-center h-10 gap-1 text-white bg-green-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-green-500"
+          className="flex items-center h-10 gap-1 text-white bg-blue-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Add Test</span>
+          <span className="uppercase font-semibold">Book Appointment</span>
         </button>
 
-        <button
+        {/* <button
           onClick={(event) => {
             event.preventDefault();
 
@@ -146,7 +153,7 @@ export default function Settings(props) {
           className="flex items-center h-10 gap-1 text-white bg-blue-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Update Test</span>
+          <span className="uppercase font-semibold">Update Appointment</span>
         </button>
 
         <button
@@ -171,8 +178,8 @@ export default function Settings(props) {
           className="flex items-center h-10 gap-1 text-white bg-red-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-red-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Delete Test</span>
-        </button>
+          <span className="uppercase font-semibold">Delete Appointment</span>
+        </button> */}
       </div>
 
       {addAppointment ? (
@@ -190,7 +197,7 @@ export default function Settings(props) {
         <div className="my-12 flex flex-col items-center bg-gray-200 rounded-lg shadow-lg">
           <div className="mt-12 flex flex-col items-start gap-2 ">
             {Object.keys(showAppointmentViewModel.payload).map((key) => (
-              <h3 className="text-xl">
+              <h3 key={key} className="text-xl">
                 <strong>{key}:</strong> {showAppointmentViewModel.payload[key]}
               </h3>
             ))}
@@ -215,12 +222,6 @@ export default function Settings(props) {
       <table className="mt-6 min-w-full text-center">
         <thead className="border-b bg-gray-800">
           <tr>
-            <th
-              scope="col"
-              className="text-sm font-medium text-white px-3 py-4"
-            >
-              ID
-            </th>
             <th
               scope="col"
               className="text-sm font-medium text-white px-3 py-4"
@@ -253,9 +254,6 @@ export default function Settings(props) {
               key={i}
               className="bg-white border-b hover:bg-gray-200 cursor-pointer"
             >
-              <td className="px-1 py-4 whitespace-nowrap text-base font-medium text-gray-900">
-                {item.appointmentId}
-              </td>
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
                 {item.dateOfAppointment}
               </td>
@@ -292,9 +290,6 @@ export default function Settings(props) {
                 <button
                   onClick={(event) => {
                     event.preventDefault();
-
-                    console.log(item);
-
                     setShowAppointmentViewModel({
                       visible: true,
                       payload: item,

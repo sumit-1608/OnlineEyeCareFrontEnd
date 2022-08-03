@@ -1,14 +1,20 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination} from 'swiper';
-import SwiperCore, { Autoplay } from 'swiper';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+/* its corouser slider 
+i have intalled swiper*/
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper";
+import SwiperCore, { Autoplay } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+/* created carouselSlider functional component 
+and returning html code 
+*/
 
 export default function CarouselSlider(props) {
   const { imageList } = props;
-  //  SwiperCore.use([Autoplay]);
+  SwiperCore.use([Autoplay]);
 
   return (
     <div className="relative p-8 max-h-[500px]">
@@ -16,7 +22,7 @@ export default function CarouselSlider(props) {
         modules={[Navigation, Pagination]}
         navigation
         pagination={{ clickable: true }}
-     autoplay
+        autoplay
       >
         {imageList.map((item, i) => (
           <SwiperSlide key={i}>

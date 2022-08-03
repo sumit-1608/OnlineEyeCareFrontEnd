@@ -1,8 +1,18 @@
+/*this is doctor's index.jsx file where i have called doctor href and 
+importing routes and route from react router dom  for neasted router and 
+router to enable navigation amoung view and also importing container component
+and other files 
+*/
+
 import { Routes, Route } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "./Main";
 import Settings from "./Settings";
 import { SettingIcon, ScopeIcon } from "../../components/SVGIcons";
+
+/* i have created doctor() which is returning  file jsx and sidepanel in doctor webpage
+and container comopenent for UI part and used for tailwind css classes
+*/
 
 export default function Doctor() {
   const sidepanal = [
@@ -18,6 +28,11 @@ export default function Doctor() {
       icon: <SettingIcon className="h-5 w-5 fill-gray-300 mr-3" />,
     },
   ];
+
+  /* returning container component which is parent component of doctor module
+   and routes to rendering doctor files based on 
+  current path location
+*/
 
   return (
     <Container

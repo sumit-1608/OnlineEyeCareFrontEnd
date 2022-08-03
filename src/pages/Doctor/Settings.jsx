@@ -1,3 +1,8 @@
+/* Action creators are generated for each case reducer function
+ importing useEffect hook from react which is didMount component in 
+ react life cycle
+*/
+
 import { useEffect } from "react";
 import {
   DeleteUserIcon,
@@ -5,16 +10,27 @@ import {
   AddUserIcon,
   UpdateUserIcon,
 } from "../../components/SVGIcons";
+
+/* importing fetching doctor module API  to perform CURD 
+operation such as add doctor , udpate doctor , view doctor
+and delete doctor 
+*/
+
 import {
   FETCH_DOCTORS_LIST_ENDPOINT,
   ADD_DOCTORS_ENDPOINT,
   UPDATE_DOCTORS_ENDPOINT,
   DELETE_DOCTORS_ENDPOINT,
-} from "../../utils/constants"; //only put doctors url here
+} from "../../utils/constants";
 
 import AddDoctorForm from "../../components/AddDoctorForm";
 import UpdateDoctorForm from "../../components/UpdateDoctorForm";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"; // importing react redux
+
+/* importing redux Action creators are generated for each case reducer function
+store ,toggle etc and configration of redux
+*/
+
 import {
   storeDoctorInRedux,
   toggleDoctorsPassword,
@@ -24,21 +40,39 @@ import {
   resetState,
 } from "../../config/doctorSlice";
 
+/* i have created functional compeonent whicb name has Settings and return  react jsx forms of doctor table
+and presenting database of doctor from the backend 
+*/
+/* i have take referance of redux and gives dispatch method of redux
+for perform CURD oepration 
+*/
+
 export default function Settings(props) {
   const { doctorsList, addDoctor, showUpdateDoctor, showDoctorViewModel } =
     useSelector((state) => state.doctorReducer);
   const dispatch = useDispatch();
 
+  /* didMount component arrow funtion and fetching doctors data
+   */
+
   useEffect(() => {
     fetchDoctorsData();
   }, []);
 
-  // DONE
+  /* fetching doctor list from backend using api's using GET method
+    and 
+    .then((response) => response.json()) conveting it  into json format
+   because of its cureently in string fromat
+
+   const converted = data.map((item) - coverted data is mapping with item and store
+   into redux
+
+*/
   const fetchDoctorsData = () => {
     fetch(FETCH_DOCTORS_LIST_ENDPOINT, {
       method: "GET",
     })
-      .then((response) => response.json())
+      .then((response) => response.json()) //here we converting it into json format
       .then((data) => {
         const converted = data.map((item) => {
           return { ...item, showPassword: false };
@@ -50,7 +84,14 @@ export default function Settings(props) {
       });
   };
 
-  // DONE
+  /* adding doctor data using POST method
+   .then((response) => response.json()) conveting it  into json format
+   because of its cureently in string fromat
+
+   const converted = data.map((item) - coverted data is mapping with item and store
+   into redux
+*/
+
   const onAddDoctorSubmit = (body) => {
     fetch(ADD_DOCTORS_ENDPOINT, {
       method: "POST",
@@ -72,7 +113,14 @@ export default function Settings(props) {
       });
   };
 
-  // DONE
+  /* updating doctor data using PUT method
+   .then((response) => response.json()) conveting it  into json format
+   because of its cureently in string fromat
+
+   const converted = data.map((item) - coverted data is mapping with item and store
+   into redux
+*/
+
   const onUpdateDoctorSubmit = (body) => {
     fetch(UPDATE_DOCTORS_ENDPOINT, {
       method: "PUT",
@@ -98,7 +146,13 @@ export default function Settings(props) {
       });
   };
 
-  // DONE
+  /* delete doctor data using DELETE method based on doctor_id
+   .then((response) => response.json()) conveting it  into json format
+   because of its cureently in string fromat
+
+   const converted = data.map((item) - coverted data is mapping with item and store
+   into redux
+*/
   const deleteDoctor = (doctor_id) => {
     fetch(`${DELETE_DOCTORS_ENDPOINT}/${doctor_id}`, {
       method: "DELETE",
@@ -122,19 +176,20 @@ export default function Settings(props) {
   return (
     <>
       <div className="flex justify-end gap-4">
+        {/* this is button to create doctor data and send to database in backend */}
         <button
           onClick={(event) => {
             event.preventDefault();
             dispatch(resetState());
             dispatch(toggleAddDoctor(!addDoctor));
-          }}
-          className="flex items-center h-10 gap-1 text-white bg-green-500 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-green-600"
+          }} // event handling when onclick for
+          className="flex items-center h-10 gap-1 text-white bg-blue-500 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-600"
         >
           <AddUserIcon className="w-5 h-5 fill-white" />
           <span className="uppercase font-semibold">Add Doctor</span>
         </button>
 
-        <button
+        {/* <button
           onClick={(event) => {
             event.preventDefault();
 
@@ -197,8 +252,10 @@ export default function Settings(props) {
         >
           <DeleteUserIcon className="w-5 h-5 fill-white" />
           <span className="uppercase font-semibold">Delete Doctor</span>
-        </button>
+        </button> */}
       </div>
+
+      {/* ternary */}
 
       {addDoctor ? <AddDoctorForm onFormSubmit={onAddDoctorSubmit} /> : null}
 
@@ -228,7 +285,7 @@ export default function Settings(props) {
           <button
             onClick={(event) => {
               event.preventDefault();
-
+              // redux dispatch method i have used here
               dispatch(
                 setDoctorViewModel({
                   visible: false,
@@ -243,6 +300,8 @@ export default function Settings(props) {
         </div>
       ) : null}
 
+      {/* here i created table structure with doctor fields and returning database and performing
+      CURD opraton */}
       <table className="mt-6 min-w-full text-center">
         <thead className="border-b bg-gray-800">
           <tr>

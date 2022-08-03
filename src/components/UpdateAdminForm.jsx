@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { ErrorIcon, ScopeIcon, MobileIcon } from "../components/SVGIcons";
 
-export default function UpdateAppointmentForm(props) {
+export default function UpdateAdminForm(props) {
   const {
     register,
     handleSubmit,
@@ -20,11 +20,11 @@ export default function UpdateAppointmentForm(props) {
     {
       type: "text",
       field: "testName",
-      placeholder: " Name",
+      placeholder: "Test Name",
       value: props.payload.testName,
       icon: <ScopeIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
-        ...register("Name", {
+        ...register("testName", {
           required: "Test Name is Required",
           pattern: {
             value: /^[a-z ,.'-]+$/i,

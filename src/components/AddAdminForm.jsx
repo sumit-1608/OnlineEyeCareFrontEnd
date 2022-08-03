@@ -1,30 +1,30 @@
 import { useForm } from "react-hook-form";
 import { ErrorIcon, ScopeIcon, MobileIcon } from "../components/SVGIcons";
 
-export default function UpdateAppointmentForm(props) {
+export default function AddAdminForm(props) {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
     trigger,
+    watch,
   } = useForm();
 
   const onSubmit = (formData) => {
     console.log(formData);
     reset();
-    props.onFormSubmit({ testId: props.payload.testId, ...formData });
+    props.onFormSubmit(formData);
   };
 
   const buildForm = [
     {
       type: "text",
       field: "testName",
-      placeholder: " Name",
-      value: props.payload.testName,
+      placeholder: "Test Name",
       icon: <ScopeIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
-        ...register("Name", {
+        ...register("testName", {
           required: "Test Name is Required",
           pattern: {
             value: /^[a-z ,.'-]+$/i,
@@ -44,7 +44,6 @@ export default function UpdateAppointmentForm(props) {
     {
       type: "text",
       field: "testType",
-      value: props.payload.testType,
       placeholder: "Test Type ",
       icon: <ScopeIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
@@ -68,7 +67,6 @@ export default function UpdateAppointmentForm(props) {
     {
       type: "text",
       field: "testDescription",
-      value: props.payload.testDescription,
       placeholder: "Description",
       icon: <MobileIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
@@ -84,7 +82,6 @@ export default function UpdateAppointmentForm(props) {
     {
       type: "text",
       field: "testCost",
-      value: props.payload.testCost,
       placeholder: "Cost",
       icon: <MobileIcon className="h-5 w-5 fill-gray-500" />,
       validation: {
@@ -111,7 +108,6 @@ export default function UpdateAppointmentForm(props) {
             {item.icon}
             <input
               type={item.type}
-              defaultValue={item.value}
               className="focus:outline-none bg-gray-200 "
               placeholder={item.placeholder}
               {...item.validation}
@@ -133,7 +129,7 @@ export default function UpdateAppointmentForm(props) {
         type="submit"
         className="mt-6 mb-24 px-4 py-2 bg-red-600 rounded-full w-60 text-white uppercase font-semibold hover:shadow-xl"
       >
-        Update Test
+        Add Test
       </button>
     </form>
   );

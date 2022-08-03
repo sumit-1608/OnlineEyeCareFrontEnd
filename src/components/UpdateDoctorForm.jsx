@@ -1,3 +1,7 @@
+/*this is updatedoctor components where i have written update doctor 
+ forms in fornt end table using API
+and i m importing react hook from for perfrom validation in doctor table */
+
 import { useForm } from "react-hook-form";
 import {
   UserIcon,
@@ -9,6 +13,11 @@ import {
   HomeIcon,
   ClockIcon,
 } from "../components/SVGIcons";
+
+/*functionname -AddDoctorForm() which have accepts props as parameter
+ which are returns react element jsx 
+ [ forms of the doctor table and i have used
+  hooks thing also for validations ] */
 
 export default function UpdateDoctorForm(props) {
   const {
@@ -25,6 +34,9 @@ export default function UpdateDoctorForm(props) {
     reset();
     props.onFormSubmit({ doctorId: props.payload.doctorId, ...formData });
   };
+
+  /* here i have performed validation for doctorName field
+  doctor name should be aplhabatical only */
 
   const buildForm = [
     {
@@ -50,6 +62,10 @@ export default function UpdateDoctorForm(props) {
         }),
       },
     },
+
+    /* here i have performed validation for doctorUserName field
+  doctor user name should be follow below pattern */
+
     {
       type: "text",
       field: "doctorUsername",
@@ -74,6 +90,10 @@ export default function UpdateDoctorForm(props) {
         }),
       },
     },
+
+    /* here i have performed validation for doctor Mobile Number field
+  doctor mobile number should be digits only */
+
     {
       type: "text",
       field: "doctorMobile",
@@ -98,6 +118,9 @@ export default function UpdateDoctorForm(props) {
         }),
       },
     },
+
+    /* here i have performed validation for doctor  email format field
+  doctor email should be follow email syntax format only */
     {
       type: "email",
       field: "doctorEmail",
@@ -114,6 +137,11 @@ export default function UpdateDoctorForm(props) {
         }),
       },
     },
+
+    /* here i have performed validation for doctor password field
+  doctorpassword should be greater than 6 and less than 14 and it will
+  follow below pattern structure */
+
     {
       type: "password",
       field: "doctorPassword",
@@ -135,6 +163,10 @@ export default function UpdateDoctorForm(props) {
         }),
       },
     },
+
+    /* here i have performed validation for doctor Address field
+  doctor address should be follow below pattern format only */
+
     {
       type: "text",
       field: "doctorAddress",
@@ -146,6 +178,10 @@ export default function UpdateDoctorForm(props) {
         ...register("doctorAddress", {}),
       },
     },
+
+    /* here i have performed validation for doctor consultation time field
+  it should be followed below pattern syntax */
+
     {
       type: "time",
       field: "doctorConsultationTime",
@@ -158,6 +194,10 @@ export default function UpdateDoctorForm(props) {
       },
     },
   ];
+
+  /* its retrun table form and i have written code in  html format
+ after onSubmit it adding doctor data fields in backend DB
+using API */
 
   return (
     <form

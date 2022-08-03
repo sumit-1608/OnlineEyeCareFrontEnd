@@ -1,43 +1,43 @@
 import { useState, useEffect } from "react";
 import { UserIcon, EyesIcon } from "../../components/SVGIcons";
 import {
-  FETCH_TEST_LIST_ENDPOINT,
-  ADD_TEST_ENDPOINT,
-  UPDATE_TEST_ENDPOINT,
-  DELETE_TEST_ENDPOINT,
+  FETCH_PATIENT_LIST_ENDPOINT,
+  ADD_PATIENT_ENDPOINT,
+  UPDATE_PATIENT_ENDPOINT,
+  DELETE_PATIENT_ENDPOINT,
 } from "../../utils/constants";
 
-import AddTestForm from "../../components/AddTestForm";
-import UpdateTestForm from "../../components/UpdateTestForm";
-import { current } from "@reduxjs/toolkit";
-
-import { useSelector, useDispatch } from "react-redux";
-import {
-  storeTestInRedux,
-  toggleAddTest,
-  resetState,
-  setUpdateTest,
-  setTestViewModel,
-} from "../../config/testSlice";
+import AddPatientForm from "../../components/AddPatientForm";
+import UpdatePatientForm from "../../components/UpdatePatientForm";
+import moment from "moment";
 
 export default function Settings(props) {
-  const { testList, addTest, showUpdateTest, showTestViewModel } = useSelector(
-    (state) => state.testReducer
-  );
-  const dispatch = useDispatch();
+  const [patientList, setPatientList] = useState([]);
+  const [addPatient, setAddPatient] = useState(false);
+  const [showUpdatePatient, setShowUpdatePatient] = useState({
+    visible: false,
+    payload: null,
+  });
+
+  const [showPatientViewModel, setShowPatientViewModel] = useState({
+    visible: false,
+    payload: null,
+  });
 
   useEffect(() => {
-    fetchTestsData();
+    fetchPatientsData();
   }, []);
 
   // DONE
-  const fetchTestsData = () => {
-    fetch(FETCH_TEST_LIST_ENDPOINT, {
+  const fetchPatientsData = () => {
+    fetch(FETCH_PATIENT_LIST_ENDPOINT, {
       method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
-        dispatch(storeTestInRedux(data));
+        console.log(data);
+
+        setPatientList(data);
       })
       .catch((error) => {
         console.log(error);
@@ -45,8 +45,12 @@ export default function Settings(props) {
   };
 
   // DONE
-  const onAddTestSubmit = (body) => {
-    fetch(ADD_TEST_ENDPOINT, {
+  const onAddPatientSubmit = (body) => {
+    body.patientAge = +body.patientAge;
+    body.patientMobile = +body.patientMobile;
+    body.patientDOB = moment(Date.parse(body.patientDOB)).format("DD-MM-YYYY");
+
+    fetch(ADD_PATIENT_ENDPOINT, {
       method: "POST",
       body: JSON.stringify(body),
       headers: {
@@ -58,8 +62,8 @@ export default function Settings(props) {
         alert(
           `${JSON.stringify([...Object.values(data)])} Added Successfully.`
         );
-        dispatch(toggleAddTest(false));
-        fetchTestsData();
+        setAddPatient(false);
+        fetchPatientsData();
       })
       .catch((error) => {
         alert(`Something wents wroung!`);
@@ -67,8 +71,12 @@ export default function Settings(props) {
   };
 
   // DONE
-  const onUpdateTestSubmit = (body) => {
-    fetch(UPDATE_TEST_ENDPOINT, {
+  const onUpdatePatientSubmit = (body) => {
+    body.patientAge = +body.patientAge;
+    body.patientMobile = +body.patientMobile;
+    body.patientDOB = moment(Date.parse(body.patientDOB)).format("DD-MM-YYYY");
+
+    fetch(UPDATE_PATIENT_ENDPOINT, {
       method: "PUT",
       body: JSON.stringify(body),
       headers: {
@@ -79,29 +87,30 @@ export default function Settings(props) {
       .then((data) => {
         alert(`Updated Successfully.`);
 
-        dispatch(
-          setUpdateTest({
-            visible: false,
-            payload: null,
-          })
-        );
-        fetchTestsData();
+        setShowUpdatePatient({
+          visible: false,
+          payload: null,
+        });
+        fetchPatientsData();
       })
       .catch((error) => {
+        console.log(error);
+
         alert(`Something wents wroung!`);
       });
   };
 
-  const deleteTest = (test_id) => {
-    fetch(`${DELETE_TEST_ENDPOINT}/${test_id}`, {
+  const deletePatient = (test_id) => {
+    fetch(`${DELETE_PATIENT_ENDPOINT}/${test_id}`, {
       method: "DELETE",
     })
       .then((response) => response.json())
       .then((data) => {
         alert(`${test_id} deleted successfully.`);
-        fetchTestsData();
+        fetchPatientsData();
       })
       .catch((error) => {
+        console.log(error);
         alert(error);
       });
   };
@@ -112,36 +121,34 @@ export default function Settings(props) {
         <button
           onClick={(event) => {
             event.preventDefault();
-
-            dispatch(resetState());
-            dispatch(toggleAddTest(!addTest));
+            setAddPatient(!addPatient);
           }}
           className="flex items-center h-10 gap-1 text-white bg-blue-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Add Test</span>
+          <span className="uppercase font-semibold">Add Patient</span>
         </button>
 
         {/* <button
           onClick={(event) => {
             event.preventDefault();
 
-            if (showUpdateTest.visible) {
+            if (showUpdatePatient.visible) {
               return;
             }
 
             let data = prompt(`Enter Test's id`);
             if (!data) {
-              alert("Test id can not be empty.");
+              alert("patient id can not be empty.");
               return;
             }
             data = +data;
 
-            const filterd = testList.filter((item) => item.testId === data);
+            const filterd = patientList.filter((item) => item.testId === data);
             if (filterd.length) {
-              setShowUpdateTest({
+              setShowUpdatePatient({
                 payload: filterd[0],
-                visible: !showUpdateTest.visible,
+                visible: !showUpdatePatient.visible,
               });
             } else {
               alert("Test id not found.");
@@ -150,10 +157,10 @@ export default function Settings(props) {
           className="flex items-center h-10 gap-1 text-white bg-blue-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-blue-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Update Test</span>
-        </button> */}
+          <span className="uppercase font-semibold">Update Patient</span>
+        </button>
 
-        {/* <button
+        <button
           onClick={(event) => {
             event.preventDefault();
             let data = prompt(`Enter test's id`);
@@ -163,9 +170,9 @@ export default function Settings(props) {
             }
             data = +data;
 
-            const filterd = testList.filter((item) => item.testId === data);
+            const filterd = patientList.filter((item) => item.testId === data);
             if (filterd.length) {
-              deleteTest(data);
+              deletePatient(data);
             } else {
               alert("test id not found.");
             }
@@ -173,25 +180,25 @@ export default function Settings(props) {
           className="flex items-center h-10 gap-1 text-white bg-red-400 px-4 py-1 rounded-xl shadow-sm hover:shadow-lg hover:bg-red-500"
         >
           <UserIcon className="w-5 h-5 fill-white" />
-          <span className="uppercase font-semibold">Delete Test</span>
+          <span className="uppercase font-semibold">Delete Patient</span>
         </button> */}
       </div>
 
-      {addTest ? <AddTestForm onFormSubmit={onAddTestSubmit} /> : null}
+      {addPatient ? <AddPatientForm onFormSubmit={onAddPatientSubmit} /> : null}
 
-      {showUpdateTest.visible ? (
-        <UpdateTestForm
-          onFormSubmit={onUpdateTestSubmit}
-          payload={showUpdateTest.payload}
+      {showUpdatePatient.visible ? (
+        <UpdatePatientForm
+          onFormSubmit={onUpdatePatientSubmit}
+          payload={showUpdatePatient.payload}
         />
       ) : null}
 
-      {showTestViewModel.visible ? (
+      {showPatientViewModel.visible ? (
         <div className="my-12 flex flex-col items-center bg-gray-200 rounded-lg shadow-lg">
           <div className="mt-12 flex flex-col items-start gap-2 ">
-            {Object.keys(showTestViewModel.payload).map((key) => (
+            {Object.keys(showPatientViewModel.payload).map((key) => (
               <h3 className="text-xl">
-                <strong>{key}:</strong> {showTestViewModel.payload[key]}
+                <strong>{key}:</strong> {showPatientViewModel.payload[key]}
               </h3>
             ))}
 
@@ -199,12 +206,10 @@ export default function Settings(props) {
               onClick={(event) => {
                 event.preventDefault();
 
-                dispatch(
-                  setTestViewModel({
-                    visible: false,
-                    payload: null,
-                  })
-                );
+                setShowPatientViewModel({
+                  visible: false,
+                  payload: null,
+                });
               }}
               className="mt-8 mb-12 bg-blue-400 hover:bg-blue-500 hover:shadow-lg px-4 py-1 rounded-lg self-center"
             >
@@ -227,19 +232,37 @@ export default function Settings(props) {
               scope="col"
               className="text-sm font-medium text-white px-3 py-4"
             >
-              Type
+              Username
             </th>
             <th
               scope="col"
               className="text-sm font-medium text-white px-3 py-4"
             >
-              Description
+              Email
             </th>
             <th
               scope="col"
               className="text-sm font-medium text-white px-3 py-4"
             >
-              Cost
+              DOB
+            </th>
+            <th
+              scope="col"
+              className="text-sm font-medium text-white px-3 py-4"
+            >
+              Mobile
+            </th>
+            <th
+              scope="col"
+              className="text-sm font-medium text-white px-3 py-4"
+            >
+              Age
+            </th>
+            <th
+              scope="col"
+              className="text-sm font-medium text-white px-3 py-4"
+            >
+              Password
             </th>
             <th
               scope="col"
@@ -249,23 +272,33 @@ export default function Settings(props) {
             </th>
           </tr>
         </thead>
+
         <tbody>
-          {testList.map((item, i) => (
+          {patientList.map((item, i) => (
             <tr
               key={i}
               className="bg-white border-b hover:bg-gray-200 cursor-pointer"
             >
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.testName}
+                {item.patientName}
               </td>
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.testType}
+                {item.patientUserName}
               </td>
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.testDescription}
+                {item.patientEmail}
               </td>
               <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
-                {item.testCost}
+                {item.patientDOB}
+              </td>
+              <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
+                {item.patientMobile}
+              </td>
+              <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
+                {item.patientAge}
+              </td>
+              <td className="text-base text-gray-900 font-normal px-1 py-4 whitespace-nowrap">
+                {item.patientPassword}
               </td>
 
               <td className="flex gap-1 justify-center text-base text-gray-900 font-normal px-0 py-4 whitespace-nowrap">
@@ -273,13 +306,10 @@ export default function Settings(props) {
                   onClick={(event) => {
                     event.preventDefault();
 
-                    dispatch(resetState());
-                    dispatch(
-                      setUpdateTest({
-                        payload: item,
-                        visible: !showUpdateTest.visible,
-                      })
-                    );
+                    setShowUpdatePatient({
+                      payload: item,
+                      visible: !showUpdatePatient.visible,
+                    });
                   }}
                   className="text-white bg-green-600 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-green-500"
                 >
@@ -288,7 +318,7 @@ export default function Settings(props) {
                 <button
                   onClick={(event) => {
                     event.preventDefault();
-                    deleteTest(item.testId);
+                    deletePatient(item.patientId);
                   }}
                   className="text-white bg-red-600 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-red-500"
                 >
@@ -297,13 +327,13 @@ export default function Settings(props) {
                 <button
                   onClick={(event) => {
                     event.preventDefault();
-                    dispatch(resetState());
-                    dispatch(
-                      setTestViewModel({
-                        visible: true,
-                        payload: item,
-                      })
-                    );
+
+                    console.log(item);
+
+                    setShowPatientViewModel({
+                      visible: true,
+                      payload: item,
+                    });
                   }}
                   className="text-white bg-cyan-400 px-1 rounded-lg capitalize hover:shadow-lg hover:bg-cyan-500"
                 >

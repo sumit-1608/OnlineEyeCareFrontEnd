@@ -16,7 +16,12 @@ export default function Doctor() {
   ];
 
   return (
-    <Container>
+    <Container
+      pageBackgroundUrl={
+        "https://thumbs.dreamstime.com/b/blue-eye-looking-exam-chart-eye-care-concept-blue-eye-exam-144398513.jpg"
+      }
+      className="bg-no-repeat  bg-cover bg-center"
+    >
       <div className="p-8 flex flex-row gap-3">
         <div className="basis-5/6 px-6 flex flex-col  ">
           <Routes>
